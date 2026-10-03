@@ -112,7 +112,7 @@ class DxtApplianceApplianceDetailsSummaryPage extends DxtApplianceFormComponent 
   //
 
   open() {
-    return browser.url(DxtApplianceApplianceDetailsSummaryPage.PATH)
+    return this.openPath(DxtApplianceApplianceDetailsSummaryPage.PATH)
   }
 }
 

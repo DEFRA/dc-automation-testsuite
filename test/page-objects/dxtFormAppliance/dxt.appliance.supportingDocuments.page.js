@@ -34,7 +34,7 @@ class DxtApplianceSupportingDocumentsPage extends DxtApplianceFormComponent {
   //
 
   open() {
-    return browser.url(DxtApplianceSupportingDocumentsPage.PATH)
+    return this.openPath(DxtApplianceSupportingDocumentsPage.PATH)
   }
 }
 

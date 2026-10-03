@@ -1,3 +1,5 @@
+import { FORMS_RUNNER_URL } from '../shared/service.urls.js'
+
 /**
  * Base for all pages in the DXT "Get a stove or other appliance certified for use in smoke
  * control areas" form. Holds the chrome every page shares: heading, back link and the
@@ -72,6 +74,14 @@ class DxtApplianceFormComponent {
   // failure names the page the data-creation run stopped on
   async verifyPageLoaded(headingText) {
     await expect(this.pageHeading).toHaveText(headingText)
+  }
+
+  //
+  // ===== NAVIGATION =====
+  //
+
+  openPath(path) {
+    return browser.url(`${FORMS_RUNNER_URL}${path}`)
   }
 }
 

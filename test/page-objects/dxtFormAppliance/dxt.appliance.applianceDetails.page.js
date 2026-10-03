@@ -12,6 +12,15 @@ class DxtApplianceApplianceDetailsPage extends DxtApplianceFormComponent {
 
   static HEADING = 'Appliance details'
 
+  static APPLIANCE_TYPES = [
+    'Stove (roomheater)',
+    'Independent boiler',
+    'Inset appliance',
+    'Cooker',
+    'Pizza oven',
+    'Other'
+  ]
+
   //
   // ===== SELECTORS =====
   //
@@ -36,7 +45,7 @@ class DxtApplianceApplianceDetailsPage extends DxtApplianceFormComponent {
     return $('#jxCIYY')
   }
 
-  // What fuel will the appliance will be certified to burn?
+  // What fuel will the appliance be certified to burn?
   get fuelToBurnTextarea() {
     return $('#NGfXVf')
   }
@@ -51,8 +60,17 @@ class DxtApplianceApplianceDetailsPage extends DxtApplianceFormComponent {
   //
 
   // What type of appliance is it? - options carry meaningful values, so they are matched on
-  // value rather than the id's index suffix
+  // value rather than the id's index suffix. The option list has changed before, so an unknown
+  // value fails here with the valid set rather than as a missing element
   getApplianceTypeRadio(applianceType) {
+    const validTypes = DxtApplianceApplianceDetailsPage.APPLIANCE_TYPES
+
+    if (!validTypes.includes(applianceType)) {
+      throw new Error(
+        `Appliance type must be one of ${validTypes.join(', ')}, got "${applianceType}"`
+      )
+    }
+
     return $(`input[name="LkASfn"][value="${applianceType}"]`)
   }
 
@@ -118,7 +136,7 @@ class DxtApplianceApplianceDetailsPage extends DxtApplianceFormComponent {
   //
 
   open(applianceId) {
-    return browser.url(
+    return this.openPath(
       `${DxtApplianceApplianceDetailsPage.PATH_PREFIX}/${applianceId}`
     )
   }

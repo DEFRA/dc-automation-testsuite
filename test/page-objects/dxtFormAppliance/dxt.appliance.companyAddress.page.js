@@ -76,7 +76,7 @@ class DxtApplianceCompanyAddressPage extends DxtApplianceFormComponent {
   //
 
   open() {
-    return browser.url(DxtApplianceCompanyAddressPage.PATH)
+    return this.openPath(DxtApplianceCompanyAddressPage.PATH)
   }
 }
 

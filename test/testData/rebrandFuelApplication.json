@@ -1,0 +1,88 @@
+{
+  "defaults": {
+    "basedInUk": true,
+    "address": {
+      "addressLine1": "AddressLine1",
+      "addressLine2": "AddressLine2",
+      "town": "Kolkata",
+      "county": "County",
+      "postcode": "PE3 8FE"
+    },
+    "complaintsSystem": true,
+    "businessType": "Rebrand",
+    "originalFuel": {
+      "manufacturer": "Test Previous Manufacturer Ltd",
+      "nameOrBrand": "Test Previous Manufacturer Ltd"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "rebrand-loose-fuel-changed",
+      "companyName": "TestCompanyFuelRebrand",
+      "contact": {
+        "name": "Shiela Robson",
+        "emailAddress": "Sheila.Robson@defra.gov.uk",
+        "alternateEmailAddress": "Sheila.Robson@defra.gov.uk",
+        "phoneNumber": "+447586765434"
+      },
+      "responsiblePerson": {
+        "name": "Shiela Robson",
+        "emailAddress": "Sheila.Robson@defra.gov.uk"
+      },
+      "saleType": "Loose (unbagged)",
+      "changesToOriginalFuel": {
+        "changed": true,
+        "explanation": "The fuel contains anthracite fines (60% to 80%), petroleum coke (10% to 30%), bituminous coal (0% to 17%) and molasses/acid or an organic binder (remainder)."
+      },
+      "brandNames": {
+        "mainBrandName": "brandUnique",
+        "additionalBrandNames": ["Brand 1"]
+      }
+    },
+    {
+      "id": "rebrand-bagged-fuel-unchanged",
+      "companyName": "TestCompanyFuelRebrand",
+      "contact": {
+        "name": "Matthew Genius",
+        "emailAddress": "Matthew.Genius@defra.gov.uk",
+        "alternateEmailAddress": "Matthew.Genius@defra.gov.uk",
+        "phoneNumber": "+447586765434"
+      },
+      "responsiblePerson": {
+        "name": "Matthew Genius",
+        "emailAddress": "Matthew.Genius@defra.gov.uk"
+      },
+      "saleType": "Bagged at source",
+      "changesToOriginalFuel": {
+        "changed": false
+      },
+      "brandNames": {
+        "mainBrandName": "brandPure",
+        "additionalBrandNames": ["Brand 7", "Brand 8"]
+      }
+    },
+    {
+      "id": "rebrand-rebagged-fuel-changed",
+      "companyName": "TestCompanyFuelRebrand",
+      "contact": {
+        "name": "David Beckham",
+        "emailAddress": "David.Beckham@defra.gov.uk",
+        "alternateEmailAddress": "David.Beckham@defra.gov.uk",
+        "phoneNumber": "+447586765434"
+      },
+      "responsiblePerson": {
+        "name": "David Beckham",
+        "emailAddress": "David.Beckham@defra.gov.uk"
+      },
+      "saleType": "Bagged or rebagged",
+      "changesToOriginalFuel": {
+        "changed": true,
+        "explanation": "The fuel contains anthracite fines (60% to 80%), petroleum coke (10% to 30%), bituminous coal (0% to 17%) and molasses/acid or an organic binder (remainder)."
+      },
+      "brandNames": {
+        "mainBrandName": "brandIntelligent",
+        "additionalBrandNames": ["Brand 6"]
+      }
+    }
+  ]
+}

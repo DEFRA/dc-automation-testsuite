@@ -34,7 +34,7 @@ class DxtApplianceFormSubmittedPage extends DxtApplianceFormComponent {
   //
 
   open() {
-    return browser.url(DxtApplianceFormSubmittedPage.PATH)
+    return this.openPath(DxtApplianceFormSubmittedPage.PATH)
   }
 }
 

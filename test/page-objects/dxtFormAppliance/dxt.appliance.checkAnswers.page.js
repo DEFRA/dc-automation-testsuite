@@ -91,7 +91,7 @@ class DxtApplianceCheckAnswersPage extends DxtApplianceFormComponent {
   //
 
   open() {
-    return browser.url(DxtApplianceCheckAnswersPage.PATH)
+    return this.openPath(DxtApplianceCheckAnswersPage.PATH)
   }
 }
 

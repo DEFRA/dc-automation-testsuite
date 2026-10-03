@@ -75,7 +75,7 @@ class DxtApplianceMainContactPage extends DxtApplianceFormComponent {
   //
 
   open() {
-    return browser.url(DxtApplianceMainContactPage.PATH)
+    return this.openPath(DxtApplianceMainContactPage.PATH)
   }
 }
 
