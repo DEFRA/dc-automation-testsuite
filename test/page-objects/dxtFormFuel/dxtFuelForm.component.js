@@ -1,3 +1,5 @@
+import { FORMS_RUNNER_URL } from '../shared/service.urls.js'
+
 /**
  * Base for all pages in the DXT "Get a solid fuel certified for use in smoke control areas"
  * form. Holds the chrome every page shares: heading, back link and the
@@ -86,7 +88,9 @@ class DxtFuelFormComponent {
   //
 
   open(slug) {
-    return browser.url(`${DxtFuelFormComponent.FORM_PATH}/${slug}`)
+    return browser.url(
+      `${FORMS_RUNNER_URL}${DxtFuelFormComponent.FORM_PATH}/${slug}`
+    )
   }
 }
 

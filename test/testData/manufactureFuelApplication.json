@@ -1,0 +1,89 @@
+{
+  "defaults": {
+    "basedInUk": true,
+    "address": {
+      "addressLine1": "AddressLine1",
+      "addressLine2": "AddressLine2",
+      "town": "Kolkata",
+      "county": "County",
+      "postcode": "PE3 8FE"
+    },
+    "complaintsSystem": true,
+    "businessType": "Manufacture",
+    "composition": "The fuel contains anthracite fines (60% to 80%), petroleum coke (10% to 30%), bituminous coal (0% to 17%) and molasses/acid or an organic binder (remainder)."
+  },
+  "scenarios": [
+    {
+      "id": "manufacture-loose-briquettes",
+      "companyName": "TestCompanyFuelManu",
+      "contact": {
+        "name": "Shiela Robson",
+        "emailAddress": "Sheila.Robson@defra.gov.uk",
+        "alternateEmailAddress": "Sheila.Robson@defra.gov.uk",
+        "phoneNumber": "+447586765434"
+      },
+      "responsiblePerson": {
+        "name": "Shiela Robson",
+        "emailAddress": "Sheila.Robson@defra.gov.uk"
+      },
+      "saleType": "Loose (unbagged)",
+      "description": "Pillow-shaped briquettes with a single line indentation on one side and a double line indentation on the reverse side",
+      "weight": "20 grams",
+      "sulphurContent": 1,
+      "manufacturingProcess": "The fuel is manufactured by a process involving roll-pressing and heat treatment at about 300°C",
+      "qualityControlSystem": true,
+      "brandNames": {
+        "mainBrandName": "brandUnique",
+        "additionalBrandNames": ["Brand 1"]
+      }
+    },
+    {
+      "id": "manufacture-bagged-firelogs",
+      "companyName": "TestCompanyFuelManu",
+      "contact": {
+        "name": "Matthew Genius",
+        "emailAddress": "Matthew.Genius@defra.gov.uk",
+        "alternateEmailAddress": "Matthew.Genius@defra.gov.uk",
+        "phoneNumber": "+447586765434"
+      },
+      "responsiblePerson": {
+        "name": "Matthew Genius",
+        "emailAddress": "Matthew.Genius@defra.gov.uk"
+      },
+      "saleType": "Bagged at source",
+      "description": "Firelogs that are approximately 225 millimetres in length and 70 millimetres in depth, with grooves along their sides",
+      "weight": "300 kilograms",
+      "sulphurContent": 0.5,
+      "manufacturingProcess": "The fuel is manufactured by a process involving kiln pyrolysis at approximately 500 to 600°C",
+      "qualityControlSystem": false,
+      "brandNames": {
+        "mainBrandName": "brandPure",
+        "additionalBrandNames": ["Brand 7", "Brand 8"]
+      }
+    },
+    {
+      "id": "manufacture-rebagged-charcoal",
+      "companyName": "TestCompanyFuelManu",
+      "contact": {
+        "name": "David Beckham",
+        "emailAddress": "David.Beckham@defra.gov.uk",
+        "alternateEmailAddress": "David.Beckham@defra.gov.uk",
+        "phoneNumber": "+447586765434"
+      },
+      "responsiblePerson": {
+        "name": "David Beckham",
+        "emailAddress": "David.Beckham@defra.gov.uk"
+      },
+      "saleType": "Bagged or rebagged",
+      "description": "Unmarked charcoal pieces between 40 and 110 millimetres in length",
+      "weight": "40 kilograms",
+      "sulphurContent": 1.5,
+      "manufacturingProcess": "The fuel is manufactured by a process involving heat treatment and extrusion",
+      "qualityControlSystem": true,
+      "brandNames": {
+        "mainBrandName": "brandIntelligent",
+        "additionalBrandNames": ["Brand 6"]
+      }
+    }
+  ]
+}

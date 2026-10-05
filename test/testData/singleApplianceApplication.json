@@ -1,0 +1,37 @@
+{
+  "defaults": {
+    "basedInUk": true,
+    "address": {
+      "addressLine1": "AddressLine1",
+      "addressLine2": "AddressLine2",
+      "town": "Kolkata",
+      "county": "County",
+      "postcode": "PE3 8FE"
+    },
+    "contact": {
+      "name": "Test Contact",
+      "emailAddress": "test.contact@example.com"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "single-appliance-multifuel-variant",
+      "companyName": "TestCompany",
+      "contact": {
+        "phoneNumber": "07567654568"
+      },
+      "appliances": [
+        {
+          "modelName": "ModelTest",
+          "modelNumber": "6765",
+          "applianceType": "Stove (roomheater)",
+          "nominalOutput": "4",
+          "multifuel": true,
+          "fuelToBurn": "coal,wood",
+          "variantOfCertifiedAppliance": true,
+          "certifiedAppliance": "Test Variant Appl"
+        }
+      ]
+    }
+  ]
+}

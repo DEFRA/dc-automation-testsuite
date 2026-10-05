@@ -1,0 +1,55 @@
+{
+  "defaults": {
+    "basedInUk": true,
+    "address": {
+      "addressLine1": "AddressLine1",
+      "addressLine2": "AddressLine2",
+      "town": "Peterborough",
+      "county": "Cambridgeshire",
+      "postcode": "PE3 8FE"
+    },
+    "contact": {
+      "name": "Test Contact",
+      "emailAddress": "test.contact@example.com"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "three-appliances-mixed",
+      "companyName": "TestCompany Multi Ltd.",
+      "contact": {
+        "phoneNumber": "07567654568"
+      },
+      "appliances": [
+        {
+          "modelName": "ModelTestOne",
+          "modelNumber": "6765",
+          "applianceType": "Independent boiler",
+          "nominalOutput": "4",
+          "multifuel": true,
+          "fuelToBurn": "coal,wood",
+          "variantOfCertifiedAppliance": true,
+          "certifiedAppliance": "Test Variant Appl"
+        },
+        {
+          "modelName": "ModelTestTwo",
+          "modelNumber": "6766",
+          "applianceType": "Stove (roomheater)",
+          "nominalOutput": "8",
+          "multifuel": false,
+          "fuelToBurn": "Wood logs only",
+          "variantOfCertifiedAppliance": false
+        },
+        {
+          "modelName": "ModelTestThree",
+          "modelNumber": "6767",
+          "applianceType": "Inset appliance",
+          "nominalOutput": "12",
+          "multifuel": true,
+          "fuelToBurn": "Wood logs, smokeless coal, anthracite",
+          "variantOfCertifiedAppliance": false
+        }
+      ]
+    }
+  ]
+}

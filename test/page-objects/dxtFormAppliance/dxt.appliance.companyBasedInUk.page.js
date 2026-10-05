@@ -7,7 +7,7 @@ class DxtApplianceCompanyBasedInUkPage extends DxtApplianceFormComponent {
   static PATH =
     '/form/preview/draft/get-a-stove-or-other-appliance-certified-for-use-in-smoke-control-areas/is-your-company-based-in-the-uk'
 
-  static HEADING = 'Is your company based in the UK?'
+  static HEADING = 'Does your company have a UK address?'
 
   static RADIO_GROUP_ID = 'TbMaXV'
 
@@ -40,9 +40,10 @@ class DxtApplianceCompanyBasedInUkPage extends DxtApplianceFormComponent {
   // ===== ASSERTIONS =====
   //
 
+  // GOV.UK radio inputs are opacity: 0 behind their label, so they never report as displayed
   async verifyPageLoaded() {
     await super.verifyPageLoaded(DxtApplianceCompanyBasedInUkPage.HEADING)
-    await expect(this.yesRadio).toBeDisplayed()
+    await expect(this.yesRadio).toExist()
   }
 
   //
@@ -50,7 +51,7 @@ class DxtApplianceCompanyBasedInUkPage extends DxtApplianceFormComponent {
   //
 
   open() {
-    return browser.url(DxtApplianceCompanyBasedInUkPage.PATH)
+    return this.openPath(DxtApplianceCompanyBasedInUkPage.PATH)
   }
 }
 

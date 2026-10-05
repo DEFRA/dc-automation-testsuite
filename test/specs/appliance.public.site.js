@@ -1,4 +1,4 @@
-import applianceSearchPage from '../page-objects/appliance.search.page.js'
+import applianceSearchPage from '../page-objects/publicSite/appliance.search.page.js'
 
 describe('Verify the Search Appliance List', function () {
   /* it('Navigation to Guidance page for smoke control from Appliance Search',async ()=>{

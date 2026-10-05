@@ -18,7 +18,7 @@ export const applianceApplicationDefaults = {
     emailAddress: 'test.contact@example.com'
   },
   appliance: {
-    applianceType: 'Stove',
+    applianceType: 'Stove (roomheater)',
     nominalOutput: '5',
     multifuel: 'No',
     fuelToBurn: 'Wood logs only',

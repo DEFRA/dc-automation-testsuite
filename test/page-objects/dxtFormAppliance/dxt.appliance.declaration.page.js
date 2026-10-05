@@ -49,7 +49,7 @@ class DxtApplianceDeclarationPage extends DxtApplianceFormComponent {
   //
 
   open() {
-    return browser.url(DxtApplianceDeclarationPage.PATH)
+    return this.openPath(DxtApplianceDeclarationPage.PATH)
   }
 }
 
