@@ -23,6 +23,7 @@ class DxtApplianceFormComponent {
 
   // Continue is the only submit button without a name attribute; Save and exit uses name="action"
   get continueButton() {
+    
     return $('.govuk-button-group button[type="submit"]:not([name])')
   }
 
@@ -35,7 +36,8 @@ class DxtApplianceFormComponent {
   //
 
   async clickContinue() {
-    await this.continueButton.click()
+     await this.continueButton.click()
+     await browser.pause(3000)
   }
 
   async clickSaveAndExit() {

@@ -8,7 +8,7 @@ import { FORMS_RUNNER_URL } from '../shared/service.urls.js'
 class DxtFuelFormComponent {
   // Every page's path is this prefix + its own slug, so it is declared once here
   static FORM_PATH =
-    '/form/preview/draft/get-a-solid-fuel-certified-for-use-in-smoke-control-areas'
+    '/form/get-a-solid-fuel-certified-for-use-in-smoke-control-areas'
 
   //
   // ===== SELECTORS =====
