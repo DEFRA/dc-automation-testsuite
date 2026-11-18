@@ -24,7 +24,7 @@ class DevolvedAdminAltApplianceRecordsPage extends RecordsListComponent {
   //
 
   open() {
-    return browser.url('/admin/iteration-2/records-appliances')
+    return browser.url('/appliance-records')
   }
 }
 

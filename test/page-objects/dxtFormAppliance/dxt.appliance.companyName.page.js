@@ -6,7 +6,7 @@ import DxtApplianceFormComponent from './dxtApplianceForm.component.js'
 class DxtApplianceCompanyNamePage extends DxtApplianceFormComponent {
   static PATH =
     '/form/get-a-stove-or-other-appliance-certified-for-use-in-smoke-control-areas/company-name'
-
+   
   static HEADING = 'Company name'
 
   //

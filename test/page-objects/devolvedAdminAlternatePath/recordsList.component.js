@@ -24,7 +24,7 @@ class RecordsListComponent {
   }
 
   get searchSubmitButton() {
-    return $('[data-test-id="submit-button"]')
+    return $('form button[type="submit"]')
   }
 
   // Only paragraph directly preceding the table
@@ -32,11 +32,9 @@ class RecordsListComponent {
     return $('//table/preceding-sibling::p[1]')
   }
 
-  // Scopes to the records table via its (visually hidden) caption
+  // The live admin's records table has no caption, and it is the only table on the page
   get table() {
-    return $(
-      `//table[.//caption[normalize-space(text())="${this.tableCaption}"]]`
-    )
+    return $('main table')
   }
 
   get nextPageLink() {
@@ -56,11 +54,14 @@ class RecordsListComponent {
     return $(`.govuk-pagination__link[aria-label="Page ${pageNumber}"]`)
   }
 
-  // Record ID is rendered in a <td scope="row"> rather than a <th>, so rows are matched on that td
+  // Record ID is the first cell of its row
   async getRow(recordId) {
-    return this.table.$(
-      `.//td[@scope="row" and normalize-space(text())="${recordId}"]/parent::tr`
-    )
+    return this.table.$(`.//tr[td[1][normalize-space(.)="${recordId}"]]`)
+  }
+
+  // New records are only known by the name they were submitted with, not by their record ID
+  async getRowByName(name) {
+    return this.table.$(`.//tr[td[contains(normalize-space(.), "${name}")]]`)
   }
 
   //
@@ -78,6 +79,11 @@ class RecordsListComponent {
 
   async view(recordId) {
     const row = await this.getRow(recordId)
+    await row.$('a').click()
+  }
+
+  async viewByName(name) {
+    const row = await this.getRowByName(name)
     await row.$('a').click()
   }
 
@@ -114,6 +120,15 @@ class RecordsListComponent {
 
   async verifyRecordListed(recordId) {
     await expect(await this.getRow(recordId)).toBeDisplayed()
+  }
+
+  async verifyRecordListedByName(name) {
+    await expect(await this.getRowByName(name)).toBeDisplayed()
+  }
+
+  async verifyStatusByName(name, expectedStatus) {
+    const row = await this.getRowByName(name)
+    await expect(row.$('.govuk-tag')).toHaveText(expectedStatus)
   }
 
   async verifyRecordNotListed(recordId) {

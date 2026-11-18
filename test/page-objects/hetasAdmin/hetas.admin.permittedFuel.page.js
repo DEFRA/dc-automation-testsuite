@@ -19,11 +19,11 @@ class PermittedFuelPage {
   }
 
   get burnsWoodYesRadio() {
-    return $('#woodCS')
+    return $('#burnsWood')
   }
 
   get burnsWoodNoRadio() {
-    return $('#woodCS-2')
+    return $('#burnsWood-2')
   }
 
   get markAsCompletedButton() {

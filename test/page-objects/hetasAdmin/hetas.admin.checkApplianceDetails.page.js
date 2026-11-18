@@ -20,8 +20,11 @@ class CheckApplianceDetailsPage {
     return new SummaryListComponent()
   }
 
+  // A link in the prototype, a form submit button in the live admin
   get markAsCompletedLink() {
-    return $('a=Mark as completed')
+    return $(
+      '//*[self::a or self::button][normalize-space(.)="Mark as completed"]'
+    )
   }
 
   get cancelLink() {

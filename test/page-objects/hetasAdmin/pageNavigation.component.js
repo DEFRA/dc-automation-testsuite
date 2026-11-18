@@ -9,7 +9,9 @@ class PageNavigationComponent {
   // Only the "Home" crumb links somewhere real; the current-page crumb shares the same
   // class but points to "#", so the href is required to disambiguate the two.
   get homeBreadcrumbLink() {
-    return $('a.govuk-breadcrumbs__link[href*="dashboard"]')
+    return $(
+      'a.govuk-breadcrumbs__link[href*="dashboard"], a.govuk-breadcrumbs__link[href*="manage-certification"]'
+    )
   }
 
   // Unique GOV.UK Frontend component class

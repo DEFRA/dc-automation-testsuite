@@ -23,7 +23,7 @@ class HetasAdminDashboardPage {
 
   // href is unique on the page for this link
   get applianceRecordsLink() {
-    return $('a[href*="records-appliances"]')
+    return $('a[href="/appliance-records"]')
   }
 
   // href is unique on the page for this link
@@ -36,13 +36,13 @@ class HetasAdminDashboardPage {
   // to identify each link uniquely. See recommendations for a data-testid fix.
   get newApplianceApplicationsLink() {
     return $(
-      '//a[@href="applications-appliances" and text()="New applications"]'
+      '//a[@href="/appliance-applications" and text()="New applications"]'
     )
   }
 
   get inProgressApplianceApplicationsLink() {
     return $(
-      '//a[@href="applications-appliances" and text()="In progress applications"]'
+      '//a[@href="/appliance-applications" and text()="In progress applications"]'
     )
   }
 
@@ -64,20 +64,18 @@ class HetasAdminDashboardPage {
   // data-testid fix on the count element itself.
   get applianceNewApplicationsCount() {
     return $(
-      '//a[@href="applications-appliances" and text()="New applications"]/parent::p/preceding-sibling::p[1]'
+      '//a[@href="/appliance-applications" and text()="New applications"]/preceding-sibling::p[1]'
     )
   }
 
   get applianceInProgressApplicationsCount() {
     return $(
-      '//a[@href="applications-appliances" and text()="In progress applications"]/parent::p/preceding-sibling::p[1]'
+      '//a[@href="/appliance-applications" and text()="In progress applications"]/preceding-sibling::p[1]'
     )
   }
 
   get applianceRecordsCount() {
-    return $(
-      '//a[@href="records-appliances"]/parent::p/preceding-sibling::p[1]'
-    )
+    return $('//a[@href="/appliance-records"]/preceding-sibling::p[1]')
   }
 
   get fuelNewApplicationsCount() {
@@ -177,7 +175,7 @@ class HetasAdminDashboardPage {
   //
 
   open() {
-    return browser.url('/admin/iteration-2/dashboard')
+    return browser.url('/manage-certification')
   }
 }
 
