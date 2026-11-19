@@ -22,7 +22,7 @@ class ReviewApplianceApplicationPage {
   }
 
   get applianceForReview() {
-    return new ReviewItemsTableComponent('Appliance for review')
+    return new ReviewItemsTableComponent('Appliances for review')
   }
 
   // Only button on the page today; see flaky-area notes if more are added
@@ -44,6 +44,11 @@ class ReviewApplianceApplicationPage {
 
   async getApplianceStatus(applianceName) {
     return this.applianceForReview.getStatus(applianceName)
+  }
+
+  // The full name as shown here, found from the part the test controls (e.g. the model name)
+  async getApplianceName(partialName) {
+    return this.applianceForReview.findItemName(partialName)
   }
 
   async getApplianceActionLabel(applianceName) {
@@ -80,9 +85,11 @@ class ReviewApplianceApplicationPage {
   // ===== ASSERTIONS =====
   //
 
+  // The reference sits on its own line in the live admin's heading
   async verifyPageLoaded(applicationReference) {
     await expect(this.pageHeading).toHaveText(
-      `Review appliance application ${applicationReference}`
+      `Review appliance application ${applicationReference}`,
+      { replace: [/\s+/g, ' '] }
     )
   }
 

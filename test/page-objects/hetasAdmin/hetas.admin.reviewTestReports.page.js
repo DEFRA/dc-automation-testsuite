@@ -15,23 +15,23 @@ class ReviewTestReportsPage {
 
   // Dedicated, label-paired form field ids
   get ratedOutputInput() {
-    return $('#rated-output')
+    return $('#ratedOutput')
   }
 
   get testedOutputInput() {
-    return $('#tested-output')
+    return $('#testedOutputRated')
   }
 
   get testedOutputLowInput() {
-    return $('#tested-output-low')
+    return $('#testedOutputLow')
   }
 
   get smokeEmissionInput() {
-    return $('#smoke-emission')
+    return $('#smokeEmissionOutputRated')
   }
 
   get smokeEmissionLowInput() {
-    return $('#smoke-emission-low')
+    return $('#smokeEmissionOutputLow')
   }
 
   get markAsPassedButton() {
@@ -39,7 +39,9 @@ class ReviewTestReportsPage {
   }
 
   get markAsFailedLink() {
-    return $('a=Mark as failed')
+    return $(
+      '//*[self::a or self::button][normalize-space(.)="Mark as failed"]'
+    )
   }
 
   get cancelLink() {

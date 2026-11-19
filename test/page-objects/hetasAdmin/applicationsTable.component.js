@@ -14,10 +14,10 @@ class ApplicationsTableComponent {
   // ===== SELECTORS =====
   //
 
-  // Scopes to the table whose caption matches this status group
+  // The prototype captions each table; the live admin puts the status in a heading above it
   get table() {
     return $(
-      `//table[.//caption[normalize-space(text())="${this.captionText}"]]`
+      `//table[.//caption[normalize-space(text())="${this.captionText}"]] | //h2[normalize-space(text())="${this.captionText}"]/following-sibling::table[1]`
     )
   }
 
@@ -25,10 +25,17 @@ class ApplicationsTableComponent {
   // ===== HELPERS =====
   //
 
+  // The reference is the first cell of its row (a th in the prototype, a td in the live admin)
   async getRow(applicationReference) {
     return this.table.$(
-      `.//th[normalize-space(text())="${applicationReference}"]/parent::tr`
+      `.//tr[*[1][normalize-space(.)="${applicationReference}"]]`
     )
+  }
+
+  // Cells in order: reference, products, then reviewer (when present) and the action
+  async getCells(applicationReference) {
+    const row = await this.getRow(applicationReference)
+    return row.$$('th, td')
   }
 
   //
@@ -36,20 +43,35 @@ class ApplicationsTableComponent {
   //
 
   async getProductsForApplication(applicationReference) {
-    const row = await this.getRow(applicationReference)
-    return (await row.$('td').getText()).trim()
+    const cells = await this.getCells(applicationReference)
+    return (await cells[1].getText()).trim()
+  }
+
+  // Submission returns no reference number, so a new application is found by its product name
+  async hasProduct(productText) {
+    const row = await this.table.$(
+      `.//tr[*[2][contains(normalize-space(.), "${productText}")]]`
+    )
+    return row.isExisting()
+  }
+
+  async getReferenceByProduct(productText) {
+    const reference = await this.table.$(
+      `.//tr[*[2][contains(normalize-space(.), "${productText}")]]/*[1]`
+    )
+    return (await reference.getText()).trim()
   }
 
   // Only present on tables with a "Reviewer" column (e.g. "In progress")
   async getReviewer(applicationReference) {
-    const row = await this.getRow(applicationReference)
-    const cells = await row.$$('td')
-    return (await cells[1].getText()).trim()
+    const cells = await this.getCells(applicationReference)
+    return (await cells[2].getText()).trim()
   }
 
+  // "Start review" is a button and "Continue review" a link, so either control is clicked
   async reviewApplication(applicationReference) {
     const row = await this.getRow(applicationReference)
-    await row.$('a').click()
+    await row.$('a, button').click()
   }
 
   //

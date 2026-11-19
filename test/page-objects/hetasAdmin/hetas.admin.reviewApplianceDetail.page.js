@@ -16,13 +16,18 @@ class ReviewApplianceDetailPage {
     return $('h1')
   }
 
-  // Only buttons on the page today; see flaky-area notes if more are added
+  // The control reads "Accept this appliance" while tasks are incomplete and "Accept appliance"
+  // after, and is a link in the prototype but a button in the live admin
   get acceptApplianceButton() {
-    return $('a=Accept this appliance')
+    return $(
+      '//*[self::a or self::button][starts-with(normalize-space(.), "Accept")]'
+    )
   }
 
   get rejectApplianceButton() {
-    return $('a=Reject appliance')
+    return $(
+      '//*[self::a or self::button][normalize-space(.)="Reject appliance"]'
+    )
   }
 
   get saveAndComeBackLaterLink() {

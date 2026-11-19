@@ -40,6 +40,27 @@ class ApplianceApplicationsPage {
     return this.inProgressTable.getReviewer(applicationReference)
   }
 
+  // A submitted application reaches this list asynchronously, so reload until its product
+  // shows in "Not started", then return the reference it was given
+  async waitForApplicationAwaitingReview(productName, timeout = 1800000) {
+    await browser.waitUntil(
+      async () => {
+        if (await this.notStartedTable.hasProduct(productName)) {
+          return true
+        }
+        await browser.refresh()
+        return false
+      },
+      {
+        timeout,
+        interval: 3000,
+        timeoutMsg: `No application for "${productName}" appeared under Not started within ${timeout}ms`
+      }
+    )
+
+    return this.notStartedTable.getReferenceByProduct(productName)
+  }
+
   async goToDashboard() {
     await pageNavigation.goToDashboard()
   }
@@ -73,7 +94,7 @@ class ApplianceApplicationsPage {
   //
 
   open() {
-    return browser.url('/admin/iteration-2/applications-appliances')
+    return browser.url('/appliance-applications')
   }
 }
 

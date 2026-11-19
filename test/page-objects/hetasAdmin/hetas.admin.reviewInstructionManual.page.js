@@ -15,32 +15,32 @@ class ReviewInstructionManualPage {
   }
 
   get manualTitleInput() {
-    return $('#manual-title')
+    return $('#title')
   }
 
   get includeVersionYesRadio() {
-    return $('#enterVersionCS')
+    return $('#includeVersion')
   }
 
   get includeVersionNoRadio() {
-    return $('#enterVersionCS-2')
+    return $('#includeVersion-2')
   }
 
   // Only present in the DOM once "Yes" is selected - a GOV.UK conditional reveal
   get versionInput() {
-    return $('#conditional-version')
+    return $('#version')
   }
 
   get publicationDayInput() {
-    return $('#publication-date-day')
+    return $('#publicationDay')
   }
 
   get publicationMonthInput() {
-    return $('#publication-date-month')
+    return $('#publicationMonth')
   }
 
   get publicationYearInput() {
-    return $('#publication-date-year')
+    return $('#publicationYear')
   }
 
   get markAsPassedButton() {
@@ -48,7 +48,9 @@ class ReviewInstructionManualPage {
   }
 
   get markAsFailedLink() {
-    return $('a=Mark as failed')
+    return $(
+      '//*[self::a or self::button][normalize-space(.)="Mark as failed"]'
+    )
   }
 
   get cancelLink() {
@@ -95,9 +97,11 @@ class ReviewInstructionManualPage {
   // ===== ASSERTIONS =====
   //
 
+  // The live admin's heading breaks the line before "for {appliance}"
   async verifyPageLoaded(applianceName) {
     await expect(this.pageHeading).toHaveText(
-      `Review instruction manuals for ${applianceName}`
+      `Review instruction manuals for ${applianceName}`,
+      { replace: [/\s+/g, ' '] }
     )
   }
 

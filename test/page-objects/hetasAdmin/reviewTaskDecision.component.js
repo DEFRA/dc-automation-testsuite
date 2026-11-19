@@ -12,12 +12,17 @@ class ReviewTaskDecisionComponent {
     return $('h1')
   }
 
+  // Links in the prototype, submit buttons in the live admin
   get markAsPassedLink() {
-    return $('a=Mark as passed')
+    return $(
+      '//*[self::a or self::button][normalize-space(.)="Mark as passed"]'
+    )
   }
 
   get markAsFailedLink() {
-    return $('a=Mark as failed')
+    return $(
+      '//*[self::a or self::button][normalize-space(.)="Mark as failed"]'
+    )
   }
 
   get cancelLink() {

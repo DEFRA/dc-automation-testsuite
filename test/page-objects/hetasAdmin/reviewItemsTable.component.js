@@ -24,9 +24,10 @@ class ReviewItemsTableComponent {
   // ===== ACTIONS =====
   //
 
+  // The status sits in a tag; its position varies as the live admin adds an ID column
   async getStatus(itemName) {
     const status = await this.card.$(
-      `.//td[normalize-space(text())="${itemName}"]/following-sibling::td[1]`
+      `.//td[normalize-space(text())="${itemName}"]/parent::tr//strong`
     )
     return (await status.getText()).trim()
   }
@@ -36,6 +37,14 @@ class ReviewItemsTableComponent {
       `.//td[normalize-space(text())="${itemName}"]/parent::tr//a`
     )
     await reviewLink.click()
+  }
+
+  // Returns the full item name for a row whose name contains the given text
+  async findItemName(partialName) {
+    const name = await this.card.$(
+      `.//td[contains(normalize-space(.), "${partialName}")]`
+    )
+    return (await name.getText()).trim()
   }
 
   async getActionLabel(itemName) {

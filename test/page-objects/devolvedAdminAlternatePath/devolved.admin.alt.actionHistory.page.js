@@ -24,11 +24,9 @@ class DevolvedAdminAltActionHistoryPage {
   // ===== HELPERS =====
   //
 
-  // Action is rendered in a <td scope="row"> rather than a <th>, so rows are matched on that td
+  // The action is the first cell of its row (a td scope="row" in the prototype, a plain td live)
   async getRow(action) {
-    return this.table.$(
-      `.//td[@scope="row" and normalize-space(text())="${action}"]/parent::tr`
-    )
+    return this.table.$(`.//tr[td[1][normalize-space(.)="${action}"]]`)
   }
 
   //

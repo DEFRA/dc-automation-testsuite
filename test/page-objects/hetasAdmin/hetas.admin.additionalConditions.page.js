@@ -14,7 +14,7 @@ class AdditionalConditionsPage {
   }
 
   get additionalConditionsTextarea() {
-    return $('#add-conditions')
+    return $('#additionalConditions')
   }
 
   get saveAndMarkAsCompletedButton() {
@@ -45,9 +45,11 @@ class AdditionalConditionsPage {
   // ===== ASSERTIONS =====
   //
 
+  // The live admin's heading breaks the line before "for {appliance}"
   async verifyPageLoaded(applianceName) {
     await expect(this.pageHeading).toHaveText(
-      `Enter additional conditions for ${applianceName}`
+      `Enter additional conditions for ${applianceName}`,
+      { replace: [/\s+/g, ' '] }
     )
   }
 
