@@ -47,6 +47,13 @@ class ReviewItemsTableComponent {
     return (await name.getText()).trim()
   }
 
+  async getItemNames() {
+    const names = Array.from(await this.card.$$('.//tbody//tr/td[1]'))
+    return Promise.all(
+      names.map(async (name) => (await name.getText()).trim())
+    )
+  }
+
   async getActionLabel(itemName) {
     const reviewLink = await this.card.$(
       `.//td[normalize-space(text())="${itemName}"]/parent::tr//a`

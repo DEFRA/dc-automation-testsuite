@@ -40,6 +40,10 @@ class ApplianceApplicationsPage {
     return this.inProgressTable.getReviewer(applicationReference)
   }
 
+  async getNotStartedProducts(applicationReference) {
+    return this.notStartedTable.getProductsForApplication(applicationReference)
+  }
+
   // A submitted application reaches this list asynchronously, so reload until its product
   // shows in "Not started", then return the reference it was given
   async waitForApplicationAwaitingReview(productName, timeout = 1800000) {

@@ -1,17 +1,10 @@
 import { loadApplianceApplications } from '../applicationSubmission/appliance.application.factory.js'
 import { submitApplianceApplication } from '../applicationSubmission/appliance.application.submission.js'
-import { applianceReviewDefaults as review } from '../testData/appliance.review.defaults.js'
+import { passDocumentationReviews, verifyAndCompletePublicListing } from '../reviewFlows/appliance.review.flow.js'
 import Dashboard from '../page-objects/hetasAdmin/hetas.admin.dashboard.page.js'
 import Applications from '../page-objects/hetasAdmin/hetas.admin.applianceApplications.page.js'
 import ApplicationReview from '../page-objects/hetasAdmin/hetas.admin.reviewApplianceApplication.page.js'
 import ApplianceReview from '../page-objects/hetasAdmin/hetas.admin.reviewApplianceDetail.page.js'
-import TestReports from '../page-objects/hetasAdmin/hetas.admin.reviewTestReports.page.js'
-import TechnicalDrawings from '../page-objects/hetasAdmin/hetas.admin.reviewTechnicalDrawings.page.js'
-import ConformityMark from '../page-objects/hetasAdmin/hetas.admin.reviewConformityMark.page.js'
-import InstructionManual from '../page-objects/hetasAdmin/hetas.admin.reviewInstructionManual.page.js'
-import ApplianceDetails from '../page-objects/hetasAdmin/hetas.admin.checkApplianceDetails.page.js'
-import PermittedFuel from '../page-objects/hetasAdmin/hetas.admin.permittedFuel.page.js'
-import AdditionalConditions from '../page-objects/hetasAdmin/hetas.admin.additionalConditions.page.js'
 import Outcome from '../page-objects/hetasAdmin/hetas.admin.reviewApplianceOutcome.page.js'
 import Complete from '../page-objects/hetasAdmin/hetas.admin.reviewApplianceComplete.page.js'
 import Records from '../page-objects/devolvedAdminAlternatePath/devolved.admin.alt.applianceRecords.page.js'
@@ -27,11 +20,6 @@ const SUBMISSION_TIMEOUT = 420000
 
 // Dashboard counts carry thousands separators, e.g. "3,358"
 const toNumber = (text) => Number(text.replaceAll(',', ''))
-
-async function verifyTaskStatus(taskName, expectedStatus) {
-  const status = await ApplianceReview.getTaskStatus(taskName)
-  expect(status).toBe(expectedStatus)
-}
 
 /**
  * EAFEA-376-E2E-001 - the complete positive journey from manufacturer submission through HETAS
@@ -103,69 +91,11 @@ describe('EAFEA-376-E2E-001 Happy path from manufacturer submission to live publ
     await ApplicationReview.startApplianceReview(applianceName)
     await ApplianceReview.verifyPageLoaded(applianceName)
 
-    await ApplianceReview.openTask('Review test reports')
-    await TestReports.verifyPageLoaded(applianceName)
-    await TestReports.enterTestResults(review.testResults)
-    await TestReports.markAsPassed()
-    await ApplianceReview.verifyPageLoaded(applianceName)
-    await verifyTaskStatus('Review test reports', 'Passed')
-
-    await ApplianceReview.openTask('Review technical drawings')
-    await TechnicalDrawings.verifyPageLoaded(applianceName)
-    await TechnicalDrawings.markAsPassed()
-    await ApplianceReview.verifyPageLoaded(applianceName)
-    await verifyTaskStatus('Review technical drawings', 'Passed')
-
-    await ApplianceReview.openTask('Review conformity mark')
-    await ConformityMark.verifyPageLoaded(applianceName)
-    await ConformityMark.markAsPassed()
-    await ApplianceReview.verifyPageLoaded(applianceName)
-    await verifyTaskStatus('Review conformity mark', 'Passed')
-
-    await ApplianceReview.openTask('Review instruction manual')
-    await InstructionManual.verifyPageLoaded(applianceName)
-    await InstructionManual.enterManualTitle(review.instructionManual.title)
-    await InstructionManual.skipVersion()
-    await InstructionManual.enterPublicationDate(
-      review.instructionManual.publicationDate
-    )
-    await InstructionManual.markAsPassed()
-    await ApplianceReview.verifyPageLoaded(applianceName)
-    await verifyTaskStatus('Review instruction manual', 'Passed')
+    await passDocumentationReviews(applianceName)
   })
 
   it('Step 5: HETAS completes the appliance details, permitted fuels and additional conditions', async () => {
-    await ApplianceReview.openTask('Check appliance details')
-    await ApplianceDetails.verifyPageLoaded(applianceName)
-    // The review starts from what the manufacturer submitted
-    const detail = (label) => ApplianceDetails.getApplianceDetail(label)
-    expect(await detail('Model name')).toBe(applianceName)
-    expect(await detail('Model number (optional)')).toBe(submitted.modelNumber)
-    expect(await detail('Appliance type')).toBe(submitted.applianceType)
-    expect(await detail('Nominal (thermal) output')).toBe(
-      `${submitted.nominalOutput} kW`
-    )
-    await ApplianceDetails.markAsCompleted()
-    await ApplianceReview.verifyPageLoaded(applianceName)
-    await verifyTaskStatus('Check appliance details', 'Completed')
-
-    await ApplianceReview.openTask('Check permitted fuels')
-    await PermittedFuel.verifyPageLoaded(applianceName)
-    // Permitted fuels are pre-filled from the application; the wood answer must still be given
-    expect(await PermittedFuel.getPermittedFuels()).not.toBe('')
-    await PermittedFuel.markBurnsWoodYes()
-    await PermittedFuel.markAsCompleted()
-    await ApplianceReview.verifyPageLoaded(applianceName)
-    await verifyTaskStatus('Check permitted fuels', 'Completed')
-
-    await ApplianceReview.openTask('Enter additional conditions')
-    await AdditionalConditions.verifyPageLoaded(applianceName)
-    await AdditionalConditions.enterAdditionalConditions(
-      review.additionalConditions
-    )
-    await AdditionalConditions.saveAndMarkAsCompleted()
-    await ApplianceReview.verifyPageLoaded(applianceName)
-    await verifyTaskStatus('Enter additional conditions', 'Completed')
+    await verifyAndCompletePublicListing(applianceName, submitted)
   })
 
   it('Step 6: HETAS accepts the appliance and continues to the all-accepted outcome', async () => {

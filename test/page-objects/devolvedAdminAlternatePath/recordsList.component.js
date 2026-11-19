@@ -87,6 +87,13 @@ class RecordsListComponent {
     await row.$('a').click()
   }
 
+  async countRowsByName(name) {
+    const rows = await this.table.$$(
+      `.//tr[td[contains(normalize-space(.), "${name}")]]`
+    )
+    return rows.length
+  }
+
   async goToNextPage() {
     await this.nextPageLink.click()
   }

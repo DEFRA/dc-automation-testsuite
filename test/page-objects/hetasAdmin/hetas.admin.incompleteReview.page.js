@@ -17,9 +17,13 @@ class IncompleteReviewPage {
     return $('p*=You cannot accept')
   }
 
-  // href does not depend on the dynamic "Return to {appliance} review" link text
+  // The link text carries the appliance name, so it is matched on its fixed prefix
   get returnToReviewLink() {
-    return $('a[href="review-appliance"]')
+    return $('a*=Return to')
+  }
+
+  get blockingReasons() {
+    return $$('main ul li')
   }
 
   //
@@ -28,6 +32,13 @@ class IncompleteReviewPage {
 
   async returnToReview() {
     await this.returnToReviewLink.click()
+  }
+
+  async getBlockingReasons() {
+    const reasons = Array.from(await this.blockingReasons)
+    return Promise.all(
+      reasons.map(async (reason) => (await reason.getText()).trim())
+    )
   }
 
   //

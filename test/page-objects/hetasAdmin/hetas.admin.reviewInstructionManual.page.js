@@ -57,6 +57,11 @@ class ReviewInstructionManualPage {
     return $('a=Cancel')
   }
 
+  // Tells the reviewer which appliance's public listing the details are published to
+  get publicListingNotice() {
+    return $('p*=These details will be published')
+  }
+
   //
   // ===== ACTIONS =====
   //
@@ -102,6 +107,12 @@ class ReviewInstructionManualPage {
     await expect(this.pageHeading).toHaveText(
       `Review instruction manuals for ${applianceName}`,
       { replace: [/\s+/g, ' '] }
+    )
+  }
+
+  async verifyPublicListingNotice(applianceName) {
+    await expect(this.publicListingNotice).toHaveText(
+      `These details will be published to the public listing for ${applianceName}.`
     )
   }
 

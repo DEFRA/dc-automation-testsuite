@@ -50,6 +50,33 @@
           "variantOfCertifiedAppliance": false
         }
       ]
+    },
+    {
+      "id": "two-appliances",
+      "companyName": "TestCompany Pair Ltd.",
+      "contact": {
+        "phoneNumber": "07567654568"
+      },
+      "appliances": [
+        {
+          "modelName": "ModelTestPairOne",
+          "modelNumber": "7001",
+          "applianceType": "Stove (roomheater)",
+          "nominalOutput": "5",
+          "multifuel": false,
+          "fuelToBurn": "Wood logs only",
+          "variantOfCertifiedAppliance": false
+        },
+        {
+          "modelName": "ModelTestPairTwo",
+          "modelNumber": "7002",
+          "applianceType": "Independent boiler",
+          "nominalOutput": "9",
+          "multifuel": true,
+          "fuelToBurn": "coal,wood",
+          "variantOfCertifiedAppliance": false
+        }
+      ]
     }
   ]
 }
