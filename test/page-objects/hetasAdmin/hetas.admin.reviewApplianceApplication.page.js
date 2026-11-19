@@ -51,6 +51,10 @@ class ReviewApplianceApplicationPage {
     return this.applianceForReview.findItemName(partialName)
   }
 
+  async getApplianceNames() {
+    return this.applianceForReview.getItemNames()
+  }
+
   async getApplianceActionLabel(applianceName) {
     return this.applianceForReview.getActionLabel(applianceName)
   }

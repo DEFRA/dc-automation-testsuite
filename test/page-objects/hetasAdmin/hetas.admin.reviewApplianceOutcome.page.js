@@ -18,6 +18,10 @@ class ReviewApplianceOutcomePage {
     return $('main ul')
   }
 
+  get suitableAppliances() {
+    return $$('main ul li')
+  }
+
   // Wording varies between one and several appliances, so only the shared part is matched
   get governmentsMessage() {
     return $('p*=submitted to the governments')
@@ -43,6 +47,13 @@ class ReviewApplianceOutcomePage {
 
   async returnToApplicationReview() {
     await this.returnToApplicationReviewLink.click()
+  }
+
+  async getSuitableAppliances() {
+    const items = Array.from(await this.suitableAppliances)
+    return Promise.all(
+      items.map(async (item) => (await item.getText()).trim())
+    )
   }
 
   //
