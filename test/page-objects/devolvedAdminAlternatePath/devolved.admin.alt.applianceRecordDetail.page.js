@@ -157,6 +157,14 @@ class DevolvedAdminAltApplianceRecordDetailPage {
     await expect(this.publicListingLink).toHaveAttribute('href', /.+/)
   }
 
+  async verifyPublicListingNotAvailable() {
+    await expect(this.publicListingLink).not.toBeDisplayed()
+  }
+
+  async getPublicListingUrl() {
+    return this.publicListingLink.getAttribute('href')
+  }
+
   async verifyDetailListed(label) {
     await expect(await this.getDetailRow(label)).toBeDisplayed()
   }
