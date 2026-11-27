@@ -1,0 +1,107 @@
+{
+  "defaults": {
+    "basedInUk": true,
+    "address": {
+      "addressLine1": "AddressLine1",
+      "addressLine2": "AddressLine2",
+      "town": "Peterborough",
+      "county": "Cambridgeshire",
+      "postcode": "PE3 8FE"
+    },
+    "contact": {
+      "name": "Test Contact",
+      "emailAddress": "test.contact@example.com"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "single-appliance-rejected",
+      "companyName": "TestCompany Rejected Single Ltd.",
+      "contact": {
+        "phoneNumber": "07567654568"
+      },
+      "appliances": [
+        {
+          "decision": "reject",
+          "modelName": "RejectedSingle",
+          "modelNumber": "9001",
+          "applianceType": "Stove (roomheater)",
+          "nominalOutput": "5",
+          "multifuel": false,
+          "fuelToBurn": "Wood logs only",
+          "variantOfCertifiedAppliance": false
+        }
+      ]
+    },
+    {
+      "id": "two-appliances-all-rejected",
+      "companyName": "TestCompany Rejected Pair Ltd.",
+      "contact": {
+        "phoneNumber": "07567654568"
+      },
+      "appliances": [
+        {
+          "decision": "reject",
+          "modelName": "RejectedPairOne",
+          "modelNumber": "9101",
+          "applianceType": "Independent boiler",
+          "nominalOutput": "9",
+          "multifuel": true,
+          "fuelToBurn": "coal,wood",
+          "variantOfCertifiedAppliance": false
+        },
+        {
+          "decision": "reject",
+          "reviewBeforeRejecting": true,
+          "modelName": "RejectedPairTwo",
+          "modelNumber": "9102",
+          "applianceType": "Stove (roomheater)",
+          "nominalOutput": "7",
+          "multifuel": false,
+          "fuelToBurn": "Wood logs only",
+          "variantOfCertifiedAppliance": false
+        }
+      ]
+    },
+    {
+      "id": "three-appliances-all-rejected",
+      "companyName": "TestCompany Rejected Trio Ltd.",
+      "contact": {
+        "phoneNumber": "07567654568"
+      },
+      "appliances": [
+        {
+          "decision": "reject",
+          "modelName": "RejectedTrioOne",
+          "modelNumber": "9201",
+          "applianceType": "Independent boiler",
+          "nominalOutput": "4",
+          "multifuel": true,
+          "fuelToBurn": "coal,wood",
+          "variantOfCertifiedAppliance": true,
+          "certifiedAppliance": "Test Variant Appl"
+        },
+        {
+          "decision": "reject",
+          "modelName": "RejectedTrioTwo",
+          "modelNumber": "9202",
+          "applianceType": "Inset appliance",
+          "nominalOutput": "12",
+          "multifuel": true,
+          "fuelToBurn": "Wood logs, smokeless coal, anthracite",
+          "variantOfCertifiedAppliance": false
+        },
+        {
+          "decision": "reject",
+          "modelName": "RejectedTrioThree",
+          "modelNumber": "9203",
+          "applianceType": "Stove (roomheater)",
+          "nominalOutput": "8",
+          "multifuel": false,
+          "fuelToBurn": "Wood logs only",
+          "variantOfCertifiedAppliance": false
+        }
+      ]
+    }
+  ]
+}

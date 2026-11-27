@@ -339,7 +339,7 @@ for (const application of applications) {
             heading: 'Appliance details'
           })
           await Record.verifyDetailPageOpens('Test results', {
-            path: '/test-reports',
+            path: '/test-results',
             heading: `Test results for ${name}`
           })
           await Record.verifyDetailPageOpens('Instruction manual', {

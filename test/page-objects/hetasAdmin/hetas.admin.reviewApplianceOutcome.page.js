@@ -37,6 +37,15 @@ class ReviewApplianceOutcomePage {
     return $('a*=Return to application')
   }
 
+  // Offered instead of "Submit for approval" when no appliance is suitable
+  get finishReviewLink() {
+    return $('//*[self::a or self::button][normalize-space(.)="Finish review"]')
+  }
+
+  get suitableSectionHeading() {
+    return $('//h2[normalize-space(.)="Suitable appliances"]')
+  }
+
   // The mixed variant's text after the unsuitable list
   get unsuitableAdvice() {
     return $('p*=You must contact the applicant')
@@ -64,18 +73,23 @@ class ReviewApplianceOutcomePage {
     await this.returnToApplicationReviewLink.click()
   }
 
+  async finishReview() {
+    await this.finishReviewLink.click()
+  }
+
+  // Every appliance listed on the page, whichever section it sits in
+  async getAllListedAppliances() {
+    return this.getSuitableAppliances()
+  }
+
   async getSuitableAppliances() {
     const items = Array.from(await this.suitableAppliances)
-    return Promise.all(
-      items.map(async (item) => (await item.getText()).trim())
-    )
+    return Promise.all(items.map(async (item) => (await item.getText()).trim()))
   }
 
   async getSectionAppliances(heading) {
     const items = Array.from(await this.getSectionItems(heading))
-    return Promise.all(
-      items.map(async (item) => (await item.getText()).trim())
-    )
+    return Promise.all(items.map(async (item) => (await item.getText()).trim()))
   }
 
   async getSectionIntroText(heading) {
@@ -101,6 +115,15 @@ class ReviewApplianceOutcomePage {
     await expect(this.suitableAppliancesList).toHaveText(applianceName, {
       containing: true
     })
+  }
+
+  // No appliance is suitable: nothing can go to the governments, so the review can only be finished
+  async verifyAllRejectedOutcome() {
+    await expect(this.finishReviewLink).toBeDisplayed()
+    await expect(this.returnToApplicationReviewLink).toBeDisplayed()
+    await expect(this.submitForApprovalLink).not.toExist()
+    await expect(this.governmentsMessage).not.toExist()
+    await expect(this.suitableSectionHeading).not.toExist()
   }
 
   async verifyReadyForGovernmentApproval() {

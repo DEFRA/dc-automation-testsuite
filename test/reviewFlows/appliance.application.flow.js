@@ -35,7 +35,7 @@ export async function submitApplication(application) {
  * Starts the review as the logged-in reviewer and checks the application moves to In progress.
  * Leaves the browser on the application review page.
  *
- * @returns the application review URL and each appliance's displayed name by model name
+ * @returns the application review URL, the reviewer, and each appliance's displayed name by model name
  */
 export async function startReview(applicationReference, application) {
   await Dashboard.open()
@@ -62,7 +62,7 @@ export async function startReview(applicationReference, application) {
   expect(reviewer).not.toBe('')
 
   await browser.url(applicationReviewUrl)
-  return { applicationReviewUrl, applianceNames }
+  return { applicationReviewUrl, applianceNames, reviewer }
 }
 
 /**
@@ -84,6 +84,17 @@ export async function rejectAppliance({
   await ApplicationReview.verifyPageLoaded(applicationReference)
   const status = await ApplicationReview.getApplianceStatus(applianceName)
   expect(status).toBe('Rejected')
+}
+
+/**
+ * Rejects each appliance in turn from the application review page.
+ *
+ * @param {{applianceName: string, reviewFirst?: boolean}[]} items
+ */
+export async function rejectAppliances(applicationReference, items) {
+  for (const { applianceName, reviewFirst } of items) {
+    await rejectAppliance({ applicationReference, applianceName, reviewFirst })
+  }
 }
 
 export async function verifyApplianceStatuses(statusByApplianceName) {
