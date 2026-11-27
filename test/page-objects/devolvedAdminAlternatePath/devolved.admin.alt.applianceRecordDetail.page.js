@@ -161,6 +161,21 @@ class DevolvedAdminAltApplianceRecordDetailPage {
     await expect(this.publicListingLink).not.toBeDisplayed()
   }
 
+  // A rejected record is never sent to governments, so it carries no certification section
+  async verifyNoCertificationDetails() {
+    await expect(this.certificationTable).not.toExist()
+    await this.verifyPublicListingNotAvailable()
+    await expect($('a*=Change')).not.toExist()
+  }
+
+  // Opens a details page, checks it loaded for this record, then returns to the record
+  async verifyDetailPageOpens(label, { path, heading }) {
+    await this.viewDetail(label)
+    await expect(browser).toHaveUrl(expect.stringContaining(path))
+    await expect($('h1')).toHaveText(heading, { containing: true })
+    await browser.back()
+  }
+
   async getPublicListingUrl() {
     return this.publicListingLink.getAttribute('href')
   }

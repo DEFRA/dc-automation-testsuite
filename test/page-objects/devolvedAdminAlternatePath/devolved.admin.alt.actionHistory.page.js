@@ -71,6 +71,10 @@ class DevolvedAdminAltActionHistoryPage {
   async verifyActionListed(action) {
     await expect(await this.getRow(action)).toBeDisplayed()
   }
+
+  async verifyActionNotListed(action) {
+    await expect(await this.getRow(action)).not.toExist()
+  }
 }
 
 export default new DevolvedAdminAltActionHistoryPage()

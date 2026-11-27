@@ -8,19 +8,14 @@ export const KNOWN_DEFECTS = {
     summary:
       'Check appliance details shows "Not provided" for the multifuel answer the manufacturer submitted'
   },
-  permittedFuelsTypo: {
-    id: 'KD-002',
-    summary:
-      'The permitted fuels error message misspells "certified" as "cerified"'
-  },
-  instructionManualNotice: {
-    id: 'KD-003',
-    summary:
-      'The instruction manual notice reads "public listing. for <appliance>." instead of "public listing for <appliance>."'
-  },
   reviewHomeBreadcrumb: {
     id: 'KD-004',
     summary:
       'The Home breadcrumb on the appliance review page links to /manage-certifications, which returns 404'
+  },
+  outcomeSingularWording: {
+    id: 'KD-005',
+    summary:
+      'The finish-review page says "the following appliance is not considered suitable" when several appliances are listed'
   }
 }

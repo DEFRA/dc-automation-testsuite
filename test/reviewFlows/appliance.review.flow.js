@@ -19,13 +19,17 @@ export async function verifyTaskStatus(taskName, expectedStatus) {
   expect(status).toBe(expectedStatus)
 }
 
-export async function passDocumentationReviews(applianceName) {
+export async function passTestReports(applianceName) {
   await ApplianceReview.openTask('Review test reports')
   await TestReports.verifyPageLoaded(applianceName)
   await TestReports.enterTestResults(review.testResults)
   await TestReports.markAsPassed()
   await ApplianceReview.verifyPageLoaded(applianceName)
   await verifyTaskStatus('Review test reports', 'Passed')
+}
+
+export async function passDocumentationReviews(applianceName) {
+  await passTestReports(applianceName)
 
   await ApplianceReview.openTask('Review technical drawings')
   await TechnicalDrawings.verifyPageLoaded(applianceName)

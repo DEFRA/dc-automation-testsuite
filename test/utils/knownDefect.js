@@ -13,6 +13,7 @@ const isAssertionFailure = (error) =>
 export function knownDefect(defect, check) {
   it(`Known defect ${defect.id}: ${defect.summary}`, async () => {
     allure.addIssue(defect.id)
+    allure.addSeverity('minor')
 
     let reproduced = false
     try {
