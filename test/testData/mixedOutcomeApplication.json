@@ -1,0 +1,127 @@
+{
+  "defaults": {
+    "basedInUk": true,
+    "address": {
+      "addressLine1": "AddressLine1",
+      "addressLine2": "AddressLine2",
+      "town": "Peterborough",
+      "county": "Cambridgeshire",
+      "postcode": "PE3 8FE"
+    },
+    "contact": {
+      "name": "Test Contact",
+      "emailAddress": "test.contact@example.com"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "two-appliances-one-rejected",
+      "companyName": "TestCompany Mixed Pair Ltd.",
+      "contact": {
+        "phoneNumber": "07567654568"
+      },
+      "appliances": [
+        {
+          "decision": "accept",
+          "modelName": "MixedPairSuitable",
+          "modelNumber": "8001",
+          "applianceType": "Stove (roomheater)",
+          "nominalOutput": "5",
+          "multifuel": false,
+          "fuelToBurn": "Wood logs only",
+          "variantOfCertifiedAppliance": false
+        },
+        {
+          "decision": "reject",
+          "modelName": "MixedPairUnsuitable",
+          "modelNumber": "8002",
+          "applianceType": "Independent boiler",
+          "nominalOutput": "9",
+          "multifuel": true,
+          "fuelToBurn": "coal,wood",
+          "variantOfCertifiedAppliance": false
+        }
+      ]
+    },
+    {
+      "id": "three-appliances-one-accepted",
+      "companyName": "TestCompany Mixed Trio Ltd.",
+      "contact": {
+        "phoneNumber": "07567654568"
+      },
+      "appliances": [
+        {
+          "decision": "reject",
+          "reviewBeforeRejecting": true,
+          "modelName": "MixedTrioUnsuitableOne",
+          "modelNumber": "8101",
+          "applianceType": "Independent boiler",
+          "nominalOutput": "4",
+          "multifuel": true,
+          "fuelToBurn": "coal,wood",
+          "variantOfCertifiedAppliance": true,
+          "certifiedAppliance": "Test Variant Appl"
+        },
+        {
+          "decision": "accept",
+          "modelName": "MixedTrioSuitable",
+          "modelNumber": "8102",
+          "applianceType": "Stove (roomheater)",
+          "nominalOutput": "8",
+          "multifuel": false,
+          "fuelToBurn": "Wood logs only",
+          "variantOfCertifiedAppliance": false
+        },
+        {
+          "decision": "reject",
+          "modelName": "MixedTrioUnsuitableTwo",
+          "modelNumber": "8103",
+          "applianceType": "Inset appliance",
+          "nominalOutput": "12",
+          "multifuel": true,
+          "fuelToBurn": "Wood logs, smokeless coal, anthracite",
+          "variantOfCertifiedAppliance": false
+        }
+      ]
+    },
+    {
+      "id": "three-appliances-two-accepted",
+      "companyName": "TestCompany Mixed Majority Ltd.",
+      "contact": {
+        "phoneNumber": "07567654568"
+      },
+      "appliances": [
+        {
+          "decision": "accept",
+          "modelName": "MixedMajoritySuitableOne",
+          "modelNumber": "8201",
+          "applianceType": "Stove (roomheater)",
+          "nominalOutput": "6",
+          "multifuel": false,
+          "fuelToBurn": "Wood logs only",
+          "variantOfCertifiedAppliance": false
+        },
+        {
+          "decision": "reject",
+          "modelName": "MixedMajorityUnsuitable",
+          "modelNumber": "8202",
+          "applianceType": "Independent boiler",
+          "nominalOutput": "10",
+          "multifuel": true,
+          "fuelToBurn": "coal,wood",
+          "variantOfCertifiedAppliance": false
+        },
+        {
+          "decision": "accept",
+          "modelName": "MixedMajoritySuitableTwo",
+          "modelNumber": "8203",
+          "applianceType": "Inset appliance",
+          "nominalOutput": "11",
+          "multifuel": true,
+          "fuelToBurn": "Wood logs, smokeless coal, anthracite",
+          "variantOfCertifiedAppliance": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 /**
  * Finish application review - reached by clicking "Continue" on the review application page
- * once every appliance has been accepted or rejected (e.g. /1083/review-outcome). The wording
- * and the action depend on the decisions: this page object covers the all-accepted variant,
- * which offers "Submit for approval".
+ * once every appliance has been accepted or rejected. The all-accepted variant lists the suitable
+ * appliances only; the mixed variant splits them into "Unsuitable appliances" and "Suitable
+ * appliances" sections. Either variant offers "Submit for approval" when at least one is suitable.
  */
 class ReviewApplianceOutcomePage {
   //
@@ -34,7 +34,22 @@ class ReviewApplianceOutcomePage {
   }
 
   get returnToApplicationReviewLink() {
-    return $('a=Return to application review')
+    return $('a*=Return to application')
+  }
+
+  // The mixed variant's text after the unsuitable list
+  get unsuitableAdvice() {
+    return $('p*=You must contact the applicant')
+  }
+
+  getSectionIntro(heading) {
+    return $(`//h2[normalize-space(.)="${heading}"]/following-sibling::p[1]`)
+  }
+
+  getSectionItems(heading) {
+    return $$(
+      `//h2[normalize-space(.)="${heading}"]/following-sibling::ul[1]/li`
+    )
   }
 
   //
@@ -56,12 +71,30 @@ class ReviewApplianceOutcomePage {
     )
   }
 
+  async getSectionAppliances(heading) {
+    const items = Array.from(await this.getSectionItems(heading))
+    return Promise.all(
+      items.map(async (item) => (await item.getText()).trim())
+    )
+  }
+
+  async getSectionIntroText(heading) {
+    return (await this.getSectionIntro(heading).getText()).trim()
+  }
+
   //
   // ===== ASSERTIONS =====
   //
 
+  // The two variants capitalise the heading differently ("Application Review" / "application review")
   async verifyPageLoaded() {
-    await expect(this.pageHeading).toHaveText('Finish Application Review')
+    await expect(this.pageHeading).toHaveText('Finish application review', {
+      ignoreCase: true
+    })
+  }
+
+  async verifyUnsuitableAdviceShown() {
+    await expect(this.unsuitableAdvice).toBeDisplayed()
   }
 
   async verifyApplianceSuitable(applianceName) {

@@ -37,6 +37,14 @@ class DevolvedAdminAltActionHistoryPage {
     await this.returnToRecordLink.click()
   }
 
+  // Actions in the order the table lists them
+  async getActions() {
+    const rows = await this.table.$$('.//tbody/tr')
+    return Promise.all(
+      rows.map(async (row) => (await row.$('td').getText()).trim())
+    )
+  }
+
   async getCompletedBy(action) {
     const row = await this.getRow(action)
     const cells = await row.$$('td')
@@ -62,6 +70,10 @@ class DevolvedAdminAltActionHistoryPage {
 
   async verifyActionListed(action) {
     await expect(await this.getRow(action)).toBeDisplayed()
+  }
+
+  async verifyActionNotListed(action) {
+    await expect(await this.getRow(action)).not.toExist()
   }
 }
 

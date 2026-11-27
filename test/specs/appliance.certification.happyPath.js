@@ -11,6 +11,7 @@ import Records from '../page-objects/devolvedAdminAlternatePath/devolved.admin.a
 import Record from '../page-objects/devolvedAdminAlternatePath/devolved.admin.alt.applianceRecordDetail.page.js'
 import SetStatus from '../page-objects/devolvedAdminAlternatePath/devolved.admin.alt.setCertificationStatus.page.js'
 import History from '../page-objects/devolvedAdminAlternatePath/devolved.admin.alt.actionHistory.page.js'
+import { applianceReviewDefaults as review } from '../testData/appliance.review.defaults.js'
 
 const COUNTRIES = ['England', 'Scotland', 'Wales', 'Northern Ireland']
 const CERTIFYING_COUNTRY = 'England'
@@ -20,6 +21,10 @@ const SUBMISSION_TIMEOUT = 420000
 
 // Dashboard counts carry thousands separators, e.g. "3,358"
 const toNumber = (text) => Number(text.replaceAll(',', ''))
+
+// Certified dates are shown as DD/MM/YYYY in UK time
+const todayInUk = () =>
+  new Date().toLocaleDateString('en-GB', { timeZone: 'Europe/London' })
 
 /**
  * EAFEA-376-E2E-001 - the complete positive journey from manufacturer submission through HETAS
@@ -37,9 +42,13 @@ describe('EAFEA-376-E2E-001 Happy path from manufacturer submission to live publ
   const modelName = submitted.modelName
 
   let newApplicationsBefore
+  let newApplicationsAfterSubmit
+  let inProgressBefore
+  let inProgressAfterStart
   let applicationReference
   let applianceName
   let recordName
+  let recordUrl
 
   it('Step 1: precondition - the test data is ready and the HETAS dashboard is available', async () => {
     expect(application.appliances.length).toBeGreaterThan(0)
@@ -48,6 +57,9 @@ describe('EAFEA-376-E2E-001 Happy path from manufacturer submission to live publ
     await Dashboard.verifyPageLoaded()
     const count = await Dashboard.getApplianceNewApplicationsCount()
     newApplicationsBefore = toNumber(count)
+    inProgressBefore = toNumber(
+      await Dashboard.getApplianceInProgressApplicationsCount()
+    )
   })
 
   it('Step 2: the manufacturer submits an application and it appears as New', async () => {
@@ -61,7 +73,8 @@ describe('EAFEA-376-E2E-001 Happy path from manufacturer submission to live publ
     await Applications.goToDashboard()
     await Dashboard.verifyPageLoaded()
     const count = await Dashboard.getApplianceNewApplicationsCount()
-    expect(toNumber(count)).toBeGreaterThan(newApplicationsBefore)
+    newApplicationsAfterSubmit = toNumber(count)
+    expect(newApplicationsAfterSubmit).toBeGreaterThan(newApplicationsBefore)
   })
 
   it('Step 3: HETAS starts the review, is assigned, and the application review opens', async () => {
@@ -77,6 +90,14 @@ describe('EAFEA-376-E2E-001 Happy path from manufacturer submission to live publ
 
     // Starting the review moves the application to In progress under the logged-in reviewer
     await ApplicationReview.goToDashboard()
+    await Dashboard.verifyPageLoaded()
+    expect(
+      toNumber(await Dashboard.getApplianceNewApplicationsCount())
+    ).toBeLessThan(newApplicationsAfterSubmit)
+    inProgressAfterStart = toNumber(
+      await Dashboard.getApplianceInProgressApplicationsCount()
+    )
+    expect(inProgressAfterStart).toBeGreaterThan(inProgressBefore)
     await Dashboard.goToInProgressApplianceApplications()
     await Applications.verifyApplicationInProgress(applicationReference)
     await Applications.verifyApplicationNotAwaitingReview(applicationReference)
@@ -115,10 +136,21 @@ describe('EAFEA-376-E2E-001 Happy path from manufacturer submission to live publ
     await Outcome.submitForApproval()
 
     await Complete.verifyPageLoaded(applicationReference)
+
+    // The application has left the review queues and the in progress count drops
+    await Applications.open()
+    await Applications.verifyPageLoaded()
+    await Applications.verifyApplicationNotInProgress(applicationReference)
+    await Applications.verifyApplicationNotAwaitingReview(applicationReference)
+    await Applications.goToDashboard()
+    await Dashboard.verifyPageLoaded()
+    expect(
+      toNumber(await Dashboard.getApplianceInProgressApplicationsCount())
+    ).toBeLessThan(inProgressAfterStart)
   })
 
   it('Step 8: the appliance record is Pending with every country Awaiting decision', async () => {
-    await Complete.goToApplianceRecords()
+    await Dashboard.goToApplianceRecords()
     await Records.verifyPageLoaded()
     await Records.search(modelName)
     await Records.verifyRecordListedByName(modelName)
@@ -133,6 +165,9 @@ describe('EAFEA-376-E2E-001 Happy path from manufacturer submission to live publ
     }
     const reference = await Record.getApplicationReference()
     expect(reference).toBe(applicationReference)
+
+    // Nothing is public until a country certifies
+    await Record.verifyPublicListingNotAvailable()
   })
 
   it('Step 9: certifying one country makes the record Live with a public listing', async () => {
@@ -146,6 +181,7 @@ describe('EAFEA-376-E2E-001 Happy path from manufacturer submission to live publ
     await Record.verifyCountryStatus(CERTIFYING_COUNTRY, 'Certified')
     const date = await Record.getCountryCertifiedDate(CERTIFYING_COUNTRY)
     expect(date).toMatch(DATE_PATTERN)
+    expect(date).toBe(todayInUk())
     for (const country of COUNTRIES.filter((c) => c !== CERTIFYING_COUNTRY)) {
       await Record.verifyCountryStatus(country, 'Awaiting decision')
     }
@@ -153,6 +189,21 @@ describe('EAFEA-376-E2E-001 Happy path from manufacturer submission to live publ
     // The first certification takes the record live automatically
     await Record.verifyApplianceStatus('Live on public list')
     await Record.verifyPublicListingAvailable()
+    expect(await Record.getApplicationReference()).toBe(applicationReference)
+  })
+
+  it('Step 9a: the public listing shows the certified appliance with the reviewed details', async () => {
+    recordUrl = await browser.getUrl()
+    await browser.url(await Record.getPublicListingUrl())
+
+    const pageText = await $('body').getText()
+    expect(pageText).toContain(recordName)
+    expect(pageText).toContain(submitted.modelNumber)
+    expect(pageText).toContain(CERTIFYING_COUNTRY)
+    expect(pageText).toContain(review.additionalConditions)
+
+    await browser.url(recordUrl)
+    await Record.verifyPageLoaded(recordName)
   })
 
   it('Step 10: the action history records acceptance, submission, certification and going live', async () => {
@@ -168,7 +219,14 @@ describe('EAFEA-376-E2E-001 Happy path from manufacturer submission to live publ
     for (const action of actions) {
       await History.verifyActionListed(action)
       expect(await History.getCompletedBy(action)).not.toBe('')
+      expect(await History.getActionDate(action)).toMatch(DATE_PATTERN)
     }
+
+    // The list is chronological in one direction, whichever way the page sorts it
+    const listed = await History.getActions()
+    const positions = actions.map((action) => listed.indexOf(action))
+    const ascending = [...positions].sort((a, b) => a - b)
+    expect([positions, [...positions].reverse()]).toContainEqual(ascending)
     // Going live is automatic, so the system rather than a person is the actor
     expect(await History.getCompletedBy('Live on public list')).toBe('System')
   })
