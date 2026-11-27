@@ -34,3 +34,13 @@ export const historyActions = {
 }
 
 export const REJECTION_DATE_PATTERN = /^\d{1,2} [A-Za-z]+ \d{4}$/
+
+export const COUNTRIES = ['England', 'Scotland', 'Wales', 'Northern Ireland']
+
+// Shown on the finish-review page when no appliance is suitable
+export const ALL_REJECTED_INTRO = /not considered to be suitable/i
+
+export const completionLinkPaths = {
+  records: '/appliance-records',
+  dashboard: '/manage-certification'
+}

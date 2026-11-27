@@ -47,6 +47,19 @@ class ReviewApplianceCompletePage {
   // ===== ASSERTIONS =====
   //
 
+  // The applications link's destination is checked separately (KD-006), so only its presence is here
+  async verifyThreeLinks({ records, dashboard }) {
+    await expect(this.returnToApplianceApplicationsLink).toBeDisplayed()
+    await expect(this.goToApplianceRecordsLink).toHaveAttribute(
+      'href',
+      expect.stringContaining(records)
+    )
+    await expect(this.returnToDashboardLink).toHaveAttribute(
+      'href',
+      expect.stringContaining(dashboard)
+    )
+  }
+
   async verifyPageLoaded(applicationReference) {
     await expect(this.pageHeading).toHaveText('Review complete')
     await expect(this.confirmationMessage).toHaveText(

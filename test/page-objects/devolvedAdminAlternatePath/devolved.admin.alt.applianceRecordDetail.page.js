@@ -168,6 +168,12 @@ class DevolvedAdminAltApplianceRecordDetailPage {
     await expect($('a*=Change')).not.toExist()
   }
 
+  async verifyCountryNotListed(country) {
+    await expect(
+      $(`//td[normalize-space(text())="${country}"]/parent::tr`)
+    ).not.toExist()
+  }
+
   // Opens a details page, checks it loaded for this record, then returns to the record
   async verifyDetailPageOpens(label, { path, heading }) {
     await this.viewDetail(label)

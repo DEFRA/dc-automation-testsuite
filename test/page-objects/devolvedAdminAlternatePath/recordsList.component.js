@@ -45,9 +45,17 @@ class RecordsListComponent {
   // ===== HELPERS =====
   //
 
-  // Checkbox ids are positional (filter, filter-1, filter-2...), so lookup is by value instead
+  // Matched on value or visible label, as the checkbox value is not guaranteed to be the label
   getStatusFilterCheckbox(status) {
-    return $(`input[name="filters"][value="${status}"]`)
+    return $(
+      `//input[@name="filters" and (@value="${status}" or following-sibling::label[normalize-space()="${status}"])]`
+    )
+  }
+
+  get noRecordsMessage() {
+    return $(
+      '//main//p[starts-with(normalize-space(.), "No ") and contains(normalize-space(.), "records found")]'
+    )
   }
 
   getPageLink(pageNumber) {
@@ -77,6 +85,12 @@ class RecordsListComponent {
     await this.getStatusFilterCheckbox(status).click()
   }
 
+  async searchByStatus(keywords, status) {
+    await this.searchInput.setValue(keywords)
+    await this.filterByStatus(status)
+    await this.searchSubmitButton.click()
+  }
+
   async view(recordId) {
     const row = await this.getRow(recordId)
     await row.$('a').click()
@@ -85,6 +99,16 @@ class RecordsListComponent {
   async viewByName(name) {
     const row = await this.getRowByName(name)
     await row.$('a').click()
+  }
+
+  // Status of every row matching the name, so a record in an unexpected status is caught
+  async getStatusesByName(name) {
+    const rows = Array.from(
+      await this.table.$$(`.//tr[td[contains(normalize-space(.), "${name}")]]`)
+    )
+    return Promise.all(
+      rows.map(async (row) => (await row.$('.govuk-tag').getText()).trim())
+    )
   }
 
   async countRowsByName(name) {
@@ -129,7 +153,15 @@ class RecordsListComponent {
     await expect(await this.getRow(recordId)).toBeDisplayed()
   }
 
+  async verifyNoRecordsFound() {
+    await expect(this.noRecordsMessage).toBeDisplayed()
+    await expect(this.table).not.toExist()
+  }
+
   async verifyRecordListedByName(name) {
+    await expect(this.table).toExist({
+      message: `No records found when searching for "${name}"`
+    })
     await expect(await this.getRowByName(name)).toBeDisplayed()
   }
 
